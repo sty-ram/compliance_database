@@ -85,6 +85,22 @@ def fetch_images(username):
         )
         return [{"id": row[0], "filename": row[1]} for row in cursor.fetchall()]
 
+# image upload storage end
+def init_image_table():
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS images (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL,
+                doc_type TEXT NOT NULL,
+                filename TEXT NOT NULL,
+                filedata BLOB NOT NULL,
+                uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        conn.commit()
+
+
 
 # Initialize dummy data table when the module is imported
 def seed_dummy_data():
